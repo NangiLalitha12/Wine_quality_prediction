@@ -4,6 +4,55 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 # -------------------------------
+# Page Config
+# -------------------------------
+st.set_page_config(
+    page_title="Wine Quality Prediction",
+    page_icon="🍷",
+    layout="centered"
+)
+
+# -------------------------------
+# Background Styling (CSS)
+# -------------------------------
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(
+            rgba(60,0,0,0.85),
+            rgba(120,0,0,0.85)
+        );
+        background-attachment: fixed;
+    }
+
+    h1, h2, h3, h4, h5, h6, p, label {
+        color: #ffffff !important;
+    }
+
+    div[data-testid="stNumberInput"] input {
+        background-color: #fff5f5;
+        color: black;
+    }
+
+    .stButton button {
+        background-color: #8B0000;
+        color: white;
+        border-radius: 10px;
+        font-size: 18px;
+        padding: 8px 20px;
+    }
+
+    .stButton button:hover {
+        background-color: #5a0000;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# -------------------------------
 # Title
 # -------------------------------
 st.title("🍷 Wine Quality Prediction")
@@ -14,7 +63,7 @@ st.write("Enter wine parameters to predict quality")
 # -------------------------------
 @st.cache_data
 def load_data():
-    return pd.read_csv("winequality-red.csv")  # keep file in same folder
+    return pd.read_csv("winequality-red.csv")
 
 data = load_data()
 
@@ -24,7 +73,7 @@ y = data["quality"]
 # -------------------------------
 # Train Model
 # -------------------------------
-model = RandomForestClassifier()
+model = RandomForestClassifier(random_state=42)
 model.fit(x, y)
 
 # -------------------------------
@@ -61,5 +110,4 @@ if st.button("Predict Wine Quality"):
     ]).reshape(1, -1)
 
     prediction = model.predict(sample_data)
-
     st.success(f"🍷 Predicted Quality of Wine: {prediction[0]}")
